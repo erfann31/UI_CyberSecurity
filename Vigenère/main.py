@@ -77,8 +77,8 @@ def known_plaintext_attack(plaintext, ciphertext):
 
 
 # Example usage
-plaintext = "CRYPTO IS SHORT FOR CRYPTOGRAPHY".upper()
-key = "ABCD"
+plaintext = "Crypto is short for cryptography".upper().replace(' ', '')
+key = "key".upper()
 encrypted_text = vigenere_encrypt(plaintext, key)
 print("Plain Text:", plaintext)
 print("Encrypted Text:", encrypted_text)
@@ -93,11 +93,32 @@ print("\nFrequency Analysis Result:")
 print(freq_analysis_result)
 
 # Kasiski Examination
-kasiski_result = kasiski_examination(encrypted_text, 4)
+kasiski_result = kasiski_examination(encrypted_text, 2)
 print("\nKasiski Examination Result:")
 print(kasiski_result)
 
 # Known Plaintext Attack
 known_plaintext_result = known_plaintext_attack(plaintext, encrypted_text)
 print("\nKnown Plaintext Attack Result:")
-print("Probable key: ",known_plaintext_result)
+print("Probable key: ", known_plaintext_result)
+
+f = input("do you want to brute force attack be done? (y , n): ")
+if f == "y":
+    # Brute-force Attack
+    def brute_force_attack(ciphertext):
+        decrypted_texts = []
+        for key_length in range(1, len(ciphertext)):
+            possible_keys = [''.join(chr(((ord(ciphertext[i]) - 65 - j) % 26) + 65) for i in range(0, len(ciphertext), key_length)) for j in range(26)]
+            for key in possible_keys:
+                decrypted_text = vigenere_decrypt(ciphertext, key)
+                decrypted_texts.append((key, decrypted_text))
+
+        return decrypted_texts
+
+
+    # Example usage
+    brute_force_result = brute_force_attack(encrypted_text)
+    print("Brute-force Attack Result:")
+    for pkey, decrypted_text in brute_force_result:
+        if len(key) == len(pkey):
+            print(f"Key: {pkey}, Decrypted Text: {decrypted_text}")
