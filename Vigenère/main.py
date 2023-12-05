@@ -102,7 +102,7 @@ known_plaintext_result = known_plaintext_attack(plaintext, encrypted_text)
 print("\nKnown Plaintext Attack Result:")
 print("Probable key: ", known_plaintext_result)
 
-f = input("do you want to brute force attack be done? (y , n): ")
+f = input("\ndo you want to brute force attack be done? (y , n): ")
 if f == "y":
     # Brute-force Attack
     def brute_force_attack(ciphertext):
